@@ -6,6 +6,7 @@ const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
 const speakeasy = require('speakeasy');
 const QRCode = require('qrcode');
+require('dotenv').config();
 
 const app = express();
 app.use(express.json());
@@ -14,11 +15,11 @@ app.use(bodyParser.json());
 
 // ---------------- CONFIG MYSQL ----------------
 const dbConfig = {
-  host: 'tiusr11pl.cuc-carrera-ti.ac.cr', // Host del servidor
-  port: 3306,
-  user: 'adminSantanaMusic',
-  password: '_adminSantaMusic12', // <-- cámbiala por tu clave real
-  database: 'tiusr11pl_santanamusic'
+  host: process.env.DB_HOST,     // <- ahora viene del .env
+  port: process.env.DB_PORT,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME
 };
 
 // pool para reusar conexiones
@@ -28,10 +29,11 @@ const pool = mysql.createPool(dbConfig);
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: 'ziriusgothc@gmail.com',
-    pass: 'ollx fdei cdha efxz' // Contraseña de app de Gmail
+    user: process.env.EMAIL_USER,   // <- ahora viene del .env
+    pass: process.env.EMAIL_PASS
   }
 });
+
 
 // ---------------- RUTAS ----------------
 
